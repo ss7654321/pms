@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pms.mapper.EmployeesMapper">
+
+
+    <select id="list" resultType="com.test.pms.pojo.EmployeesSimple">
+        select
+            e.employee_id,
+            e.name,
+            e.age,
+            e.employee_photo,
+            e.date_on_board
+        from enss.employees e
+        <where>
+            <if test="name != null and name != ''">
+                e.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="age != null and age != ''">
+                AND e.age = #{age}
+            </if>
+            <if test="professionalTitle != null and professionalTitle != ''">
+                AND e.professional_title = #{professionalTitle}
+            </if>
+            <if test="begin != null and end != null">
+                AND e.date_on_board BETWEEN #{begin} AND #{end}
+            </if>
+        </where>
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <update id="update">
+        update enss.employees
+        <set>
+            <if test="name != null and name !=''">
+                enss.employees.name = #{name},
+            </if>
+            <if test="departmentId != null and departmentId !=''">
+                enss.employees.department_id = #{departmentId},
+            </if>
+            <if test="age != null and age !=''">
+                enss.employees.age = #{age},
+            </if>
+            <if test="employeePhoto != null and employeePhoto !=''">
+                enss.employees.employee_photo = #{employeePhoto},
+            </if>
+            <if test="professionalTitle != null and professionalTitle !=''">
+                enss.employees.professional_title = #{professionalTitle},
+            </if>
+            <if test="lastUpdateDate != null and lastUpdateDate !=''">
+                enss.employees.last_update_date = #{lastUpdateDate}
+            </if>
+        </set>
+        where employee_id = #{employeeId}
+    </update>
+</mapper>

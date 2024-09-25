@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pms.mapper.ConsumersMapper">
+
+
+    <select id="list" resultType="com.test.pms.pojo.UsersSimple">
+        select
+        u.user_id,
+        u.username,
+        u.user_photo,
+        u.phone,
+        u.registration_date
+        from enss.users u
+        <where>
+            <if test="userName != null and userName != ''">
+                u.username LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="begin != null and end != null">
+                AND u.registration_date BETWEEN #{begin} AND #{end}
+            </if>
+        </where>
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <update id="update">
+        update enss.users
+        set
+            <if test="userName ！= null and userName !=''">
+                enss.users.username = #{userName},
+            </if>
+            <if test="password ！= null and password !=''">
+                enss.users.password = #{password},
+            </if>
+            <if test="userPhoto ！= null and userPhoto !=''">
+                enss.users.user_photo = #{userPhoto},
+            </if>
+            <if test="phone ！= null and phone !=''">
+                enss.users.phone = #{phone},
+            </if>
+            <if test="userAccount ！= null and userAccount !=''">
+                enss.users.user_account = #{userAccount},
+            </if>
+            <if test="userAddress ！= null and userAddress !=''">
+                enss.users.user_address = #{userAddress},
+            </if>
+            <if test="lastUpdateDate ！= null and lastUpdateDate !=''">
+                enss.users.last_update_date = #{lastUpdateDate}
+            </if>
+        where enss.users.user_id = #{userId}
+    </update>
+</mapper>

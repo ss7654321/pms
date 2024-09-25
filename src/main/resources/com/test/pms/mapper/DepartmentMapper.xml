@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pms.mapper.DepartmentMapper">
+    <update id="update">
+        update enss.department
+        set
+            <if test=" != null and  !=''">
+                enss.department.department_name = #{departmentName},
+            </if>
+            <if test=" != null">
+                enss.department.last_update_date = #{lastUpdateDate}
+            </if>
+        where enss.department.department_id = #{departmentId}
+    </update>
+</mapper>

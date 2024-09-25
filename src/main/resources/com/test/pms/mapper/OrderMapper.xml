@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.test.pms.mapper.OrderMapper">
+<!--        用户
+        <resultMap id="userWithStatusResultMap" type="com.test.pms.pojo.Users">
+            <id property="userId" column="user_id"/>
+            <result property="userName" column="username"/>
+        </resultMap>
+        <resultMap id="userBasicStatusResultMap" type="com.test.pms.pojo.Users">
+            <id property="userId" column="user_id"/>
+            <result property="userName" column="username"/>
+            <result property="phone" column="phone"/>
+            <result property="userAccount" column="user_account"/>
+        </resultMap>
+    &lt;!&ndash;商品&ndash;&gt;
+        <resultMap id="productWithStatusResultMap" type="com.test.pms.pojo.Product">
+            <id property="productId" column="product_id"/>
+            <result property="productName" column="product_name"/>
+        </resultMap>
+        <resultMap id="productBasicStatusResultMap" type="com.test.pms.pojo.Product">
+            <id property="productId" column="product_id"/>
+            <result property="productName" column="product_name"/>
+            <result property="productPrice" column="product_price"/>
+        </resultMap>
+
+        <resultMap id="opWithStatusResultMap" type="com.test.pms.pojo.OrderProduct">
+            <id property="orderProductId" column="order_product_id"/>
+            <result property="quantity" column="quantity"/>
+            <collection property="product" resultMap="productWithStatusResultMap"/>
+            <collection property="order" resultMap="orderWithStatusResultMap"/>
+        </resultMap>
+        <resultMap id="opBasicStatusResultMap" type="com.test.pms.pojo.OrderProduct">
+            <id property="orderProductId" column="order_product_id"/>
+            <result property="quantity" column="quantity"/>
+            <collection property="product" resultMap="productBasicStatusResultMap"/>
+            <collection property="order" resultMap="orderBasicStatusResultMap"/>
+        </resultMap>
+    &lt;!&ndash;订单&ndash;&gt;
+        <resultMap id="orderWithStatusResultMap" type="com.test.pms.pojo.Order">
+            <id property="orderId" column="order_id"/>
+            <result property="totalAmount" column="total_amount"/>
+            <result property="orderDate" column="order_date"/>
+            <collection property="user" resultMap="userWithStatusResultMap"/>
+        </resultMap>-->
+<!--实验二
+    <resultMap id="orderResultMap" type="com.test.pms.pojo.Order">
+        <result property="orderId" column="order_id" />
+        &lt;!&ndash; If total_spent is part of Order, map it here &ndash;&gt;
+    </resultMap>
+
+    &lt;!&ndash; Define the resultMap for the OrderSummary DTO &ndash;&gt;
+    <resultMap id="orderBasicStatusResultMap" type="com.test.pms.pojo.OrderProduct">
+        <result property="username" column="username" />
+        <result property="products" column="products" />
+        <result property="totalSpent" column="total_spent" />
+        &lt;!&ndash; Map the Order object using the previously defined resultMap &ndash;&gt;
+        <association property="order" resultMap="orderResultMap" />
+    </resultMap>
+
+    &lt;!&ndash; Define the query &ndash;&gt;
+    <select id="list" resultMap="orderBasicStatusResultMap">
+        SELECT
+            o.order_id,
+            u.username,
+            SUM(o.total_amount) AS total_spent,
+            GROUP_CONCAT(CONCAT(op.quantity, 'x ', p.product_name) ORDER BY p.product_name SEPARATOR '; ') AS products
+        FROM
+            enss.`order` o,
+            enss.users u,
+            enss.order_product op,
+            enss.products p
+        WHERE
+            o.user_id = u.user_id
+          AND o.order_id = op.order_id
+          AND op.product_id = p.product_id
+        GROUP BY
+            u.username
+        LIMIT #{start}, #{pageSize}
+    </select>-->
+
+
+
+    <select id="list" resultType="com.test.pms.pojo.OrderAll">
+        SELECT
+        u.username,
+        op.total_amount,
+        GROUP_CONCAT(CONCAT(op.quantity, 'x ', p.product_name) SEPARATOR '; ') AS products,
+        MAX(o.order_date) AS order_date -- 使用聚合函数来确保兼容性
+        FROM
+        enss.`order` o
+        INNER JOIN enss.users u ON o.user_id = u.user_id
+        INNER JOIN enss.order_product op ON o.order_id = op.order_id
+        INNER JOIN enss.products p ON op.product_id = p.product_id
+        <where>
+            <if test="userName != null and userName != ''">
+                u.username LIKE CONCAT('%', #{userName}, '%')
+            </if>
+            <if test="productName != null and productName != ''">
+                AND p.product_name LIKE CONCAT('%', #{productName}, '%')
+            </if>
+            <if test="begin != null and end != null">
+                AND o.order_date BETWEEN #{begin} AND #{end}
+            </if>
+        </where>
+        GROUP BY
+        o.order_id
+        LIMIT #{start}, #{pageSize}
+    </select>
+
+    <update id="updateOr">
+        update enss.`order`
+        <set>
+            <if test="totalAmount != null and totalAmount !=''">
+                enss.`order`.total_amount  = #{totalAmount},
+            </if>
+            <if test="billingAddress != null and billingAddress !=''">
+                enss.`order`.billing_address = #{billingAddress},
+            </if>
+            <if test="lastUpdateDate != null and lastUpdateDate !=''">
+                enss.`order`.last_update_date = #{lastUpdateDate}
+            </if>
+        </set>
+        where enss.`order`.order_id = #{orderId}
+    </update>
+    <update id="updateOp">
+        update enss.order_product
+        <set>
+            <if test="productId != null and productId !=''">
+                enss.order_product.product_id = #{productId},
+            </if>
+            <if test="quantity != null and quantity !=''">
+                enss.order_product.quantity = #{quantity}
+            </if>
+        </set>
+        where order_product_id = #{orderProductId}
+    </update>
+</mapper>
