@@ -27,5 +27,5 @@ public interface EmployeesMapper {
     @Select("select * from enss.employees where enss.employees.employee_id = #{id}")
     public Employees select(Integer id);
 
-    void update(Administrator administrator);
+    void update(Employees employees);
 }

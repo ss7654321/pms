@@ -46,4 +46,10 @@ public class EmployeesServiceImpl implements EmployeesService {
     public Employees select(Integer id) {
         return employeesMapper.select(id);
     }
+
+    @Override
+    public void update(Employees employees) {
+        employees.setLastUpdateDate(LocalDateTime.now());
+        employeesMapper.update(employees);
+    }
 }

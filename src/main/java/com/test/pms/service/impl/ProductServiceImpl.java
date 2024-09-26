@@ -42,4 +42,10 @@ public class ProductServiceImpl implements ProductService {
     public String select(Integer id) {
         return productMapper.selectDes(id);
     }
+
+    @Override
+    public void update(Product product) {
+        product.setLastUpdateDate(LocalDate.now());
+        productMapper.update(product);
+    }
 }

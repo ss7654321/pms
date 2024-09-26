@@ -15,4 +15,6 @@ public interface EmployeesService {
     PageBean page(Integer page, Integer pageSize, String name, Integer age, String professionalTitle, LocalDate begin, LocalDate end);
 
     Employees select(Integer id);
+
+    void update(Employees employees);
 }

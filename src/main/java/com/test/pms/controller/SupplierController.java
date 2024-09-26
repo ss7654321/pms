@@ -34,4 +34,11 @@ public class SupplierController {
         supplierService.add(supplier);
         return Result.success();
     }
+
+    @PutMapping
+    public Result update(@RequestBody Supplier supplier){
+        log.info("update Supplier {}",supplier);
+        supplierService.update(supplier);
+        return Result.success();
+    }
 }

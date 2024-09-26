@@ -37,4 +37,10 @@ public class DepartmentController {
         return Result.success();
     }
 
+    @PutMapping
+    public Result update(@RequestBody Department department){
+        log.info("update department: {}", department);
+        departmentService.update(department);
+        return Result.success();
+    }
 }

@@ -43,4 +43,10 @@ public class ConsumersServiceImpl implements ConsumersService {
     public Users selectId(Integer id) {
         return consumersMapper.select(id);
     }
+
+    @Override
+    public void update(Users users) {
+        users.setLastUpdateDate(LocalDateTime.now());
+        consumersMapper.update(users);
+    }
 }

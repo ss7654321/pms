@@ -31,4 +31,10 @@ public class DepartmentServiceImpl implements DepartmentService {
         department.setLastUpdateDate(LocalDateTime.now());
         departmentMapper.insert(department);
     }
+
+    @Override
+    public void update(Department department) {
+        department.setLastUpdateDate(LocalDateTime.now());
+        departmentMapper.update(department);
+    }
 }

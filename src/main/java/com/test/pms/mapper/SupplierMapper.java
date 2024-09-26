@@ -20,8 +20,8 @@ public interface SupplierMapper {
     @Insert("insert into enss.suppliers values (#{supplierId},#{supplierName},#{contactInfo},#{lastUpdateDate})")
     void insert(Supplier supplier);
 
-    @Select("select * from enss.administrators where administrators_id = #{id}")
-    Administrator selectById(Integer id);
+    @Select("select * from enss.suppliers where enss.suppliers.supplier_id = #{id}")
+    Supplier selectById(Integer id);
 
-    void update(Administrator administrator);
+    void update(Supplier supplier);
 }

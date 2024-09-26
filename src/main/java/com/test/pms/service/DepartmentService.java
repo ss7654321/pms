@@ -10,4 +10,6 @@ public interface DepartmentService {
     void delete(Integer id);
 
     void add(Department department);
+
+    void update(Department department);
 }

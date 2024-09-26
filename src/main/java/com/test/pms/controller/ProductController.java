@@ -50,4 +50,11 @@ public class ProductController {
         productService.add(product);
         return Result.success();
     }
+
+    @PutMapping
+    public Result update(@RequestBody Product product){
+        log.info("Product update {}",product);
+        productService.update(product);
+        return Result.success();
+    }
 }

@@ -13,4 +13,6 @@ public interface ProductService {
     PageBean page(Integer page, Integer pageSize, String productName, String supplierName, LocalDate begin, LocalDate end);
 
     String select(Integer id);
+
+    void update(Product product);
 }

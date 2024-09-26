@@ -10,4 +10,6 @@ public interface SupplierService {
     void delete(Integer id);
 
     void add(Supplier supplier);
+
+    void update(Supplier supplier);
 }

@@ -36,5 +36,5 @@ public interface ProductMapper {
     @Select("select * from enss.products where enss.products.product_id = #{id}")
     public Product selectById(Integer id);
 
-    void update(Administrator administrator);
+    void update(Product product);
 }

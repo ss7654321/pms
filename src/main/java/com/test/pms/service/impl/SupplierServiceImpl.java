@@ -30,4 +30,10 @@ public class SupplierServiceImpl implements SupplierService {
         supplier.setLastUpdateDate(LocalDate.now());
         supplierMapper.insert(supplier);
     }
+
+    @Override
+    public void update(Supplier supplier) {
+        supplier.setLastUpdateDate(LocalDate.now());
+        supplierMapper.update(supplier);
+    }
 }

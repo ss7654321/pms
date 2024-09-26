@@ -46,4 +46,11 @@ public class ConsumersController {
         consumerService.add(users);
         return Result.success();
     }
+
+    @PutMapping
+    public Result update(@RequestBody Users users){
+        log.info("update consumer: {}", users);
+        consumerService.update(users);
+        return Result.success();
+    }
 }

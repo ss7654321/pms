@@ -28,5 +28,5 @@ public interface ConsumersMapper {
     @Select("select * from enss.users where enss.users.user_id = #{id}")
     Users select(Integer id);
 
-    void update(Administrator administrator);
+    void update(Users users);
 }

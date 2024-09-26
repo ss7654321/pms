@@ -14,4 +14,6 @@ public interface ConsumersService {
     void add(Users users);
 
     Users selectId(Integer id);
+
+    void update(Users users);
 }

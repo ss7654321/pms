@@ -25,8 +25,8 @@ public interface DepartmentMapper {
     @Insert("insert into enss.department values (#{departmentId},#{departmentName},#{creationDate},#{lastUpdateDate})")
     void insert(Department department);
 
-    @Select("select * from enss.administrators where administrators_id = #{id}")
-    Administrator selectById(Integer id);
+    @Select("select * from enss.department where enss.department.department_id = #{id}")
+    Department selectById(Integer id);
 
-    void update(Administrator administrator);
+    void update(Department department);
 }

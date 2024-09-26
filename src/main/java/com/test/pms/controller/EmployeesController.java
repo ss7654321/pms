@@ -48,4 +48,11 @@ public class EmployeesController {
         employeesService.add(employees);
         return Result.success();
     }
+
+    @PutMapping
+    public Result update(@RequestBody Employees employees){
+        log.info("employees update: {}", employees);
+        employeesService.update(employees);
+        return Result.success();
+    }
 }
