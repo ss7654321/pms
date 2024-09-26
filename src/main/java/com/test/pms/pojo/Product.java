@@ -20,7 +20,7 @@ last_update_date*/
     private String productName;
     private Double productPrice;
     private Integer stockQuantity;
-    private String supplierName;
+    private Integer supplierId;
     private LocalDate lastUpdateDate;
     private String description;
 }

@@ -39,7 +39,6 @@ public class OrderController {
         return Result.success(orderAll);
     }
 
-
     @DeleteMapping("/{id}")
     public Result delete(@PathVariable Integer id){
         orderService.delete(id);

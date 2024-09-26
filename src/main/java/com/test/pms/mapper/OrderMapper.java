@@ -18,12 +18,12 @@ public interface OrderMapper {
     void insertOrder(Order order);
 
     @Insert("insert into enss.order_product values (#{orderProductId},#{orderId},#{productId},#{quantity})")
-    void insert(OrderAll orderAll);
+    void insert(OrderProduct orderProduct);
     //查找
     @Select("select count(*) from enss.order")
     public Integer count();
 
-    public List<OrderAll> list(Integer start, Integer pageSize, String userName, String productName, LocalDate begin, LocalDate end);
+    public List<orderView> list(Integer start, Integer pageSize, String userName, String productName, LocalDate begin, LocalDate end);
 
     //修改
     @Select("select * from enss.`order` where enss.`order`.order_id = #{id}")
@@ -42,4 +42,10 @@ public interface OrderMapper {
 
     void updateOr(Order order);
     void updateOp(Integer productId, Integer quantity);
+
+    @Select("select * from enss.order_product where enss.order_product.product_id = #{productId} ")
+    OrderProduct selectOpByPId(Integer productId);
+
+    @Select("select max(enss.`order`.order_id) from enss.`order`")
+    Integer max();
 }

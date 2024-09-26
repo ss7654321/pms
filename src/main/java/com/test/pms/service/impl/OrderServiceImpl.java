@@ -33,11 +33,13 @@ public class OrderServiceImpl implements OrderService {
         orderAll.getOrder().setOrderDate(LocalDate.now());
         orderAll.getOrder().setLastUpdateDate(LocalDate.now());
         Double sum = 0.0;
-        orderAll.getOrder().setOrderId(orderMapper.count());
+        orderAll.getOrder().setOrderId(orderMapper.max()+1);
         for (OrderProduct element : orderAll.getOrderProducts()) {
             sum += productMapper.findPrice(element.getProductId()) * element.getQuantity();
+            orderMapper.insert(element);
         }
-        orderMapper.insert(orderAll);
+        orderAll.getOrder().setTotalAmount(sum);
+        orderMapper.insertOrder(orderAll.getOrder());
     }
 
     @Override
@@ -46,7 +48,7 @@ public class OrderServiceImpl implements OrderService {
         Integer count = orderMapper.count();
         //获取分页数据列表
         Integer start = (page - 1) * pageSize;
-        List<OrderAll> lists = orderMapper.list(start,pageSize,userName,productName,begin,end);
+        List<orderView> lists = orderMapper.list(start,pageSize,userName,productName,begin,end);
         //封装PageBean对象
         PageBean pageBean = new PageBean(count,lists);
         System.out.println("结果"+pageBean);
@@ -55,13 +57,14 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public OrderAll select(Integer id) {
-        Order order = orderMapper.selector(id);
-        List<OrderProduct> orderProducts = orderMapper.selectOp(id);
-        Map<Product,Integer> products = new HashMap();
-        orderProducts.forEach(element->{
-            products.put(orderMapper.selectP(element.getProductId()),element.getQuantity());
-        });
         OrderAll orderAll = new OrderAll();
+        orderAll.setOrder(orderMapper.selector(id));
+        orderAll.setOrderProducts(orderMapper.selectOp(id));
+        List<Product> products = new ArrayList<>();
+        for(OrderProduct orderProduct : orderAll.getOrderProducts()){
+            products.add(productMapper.selectById(orderProduct.getProductId()));
+        }
+        orderAll.setProducts(products);
         return orderAll;
     }
 

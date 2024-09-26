@@ -33,8 +33,8 @@ public interface ProductMapper {
     @Insert("insert into enss.products values (#{productId},#{productName},#{productPrice},#{stockQuantity},#{supplierName},#{lastUpdateDate},#{description})")
     void insert(Product product);
 
-    @Select("select * from enss.administrators where administrators_id = #{id}")
-    Administrator selectById(Integer id);
+    @Select("select * from enss.products where enss.products.product_id = #{id}")
+    public Product selectById(Integer id);
 
     void update(Administrator administrator);
 }

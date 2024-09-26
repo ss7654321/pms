@@ -81,17 +81,17 @@
 
 
 
-    <select id="list" resultType="com.test.pms.pojo.OrderAll">
+    <select id="list" resultType="com.test.pms.pojo.orderView">
         SELECT
         u.username,
-        op.total_amount,
+        o.total_amount,
         GROUP_CONCAT(CONCAT(op.quantity, 'x ', p.product_name) SEPARATOR '; ') AS products,
-        MAX(o.order_date) AS order_date -- 使用聚合函数来确保兼容性
+        o.order_date
         FROM
         enss.`order` o
-        INNER JOIN enss.users u ON o.user_id = u.user_id
-        INNER JOIN enss.order_product op ON o.order_id = op.order_id
-        INNER JOIN enss.products p ON op.product_id = p.product_id
+        JOIN enss.users u ON o.user_id = u.user_id
+        JOIN enss.order_product op ON o.order_id = op.order_id
+        JOIN enss.products p ON op.product_id = p.product_id
         <where>
             <if test="userName != null and userName != ''">
                 u.username LIKE CONCAT('%', #{userName}, '%')
